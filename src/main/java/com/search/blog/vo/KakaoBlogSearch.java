@@ -1,8 +1,11 @@
 package com.search.blog.vo;
 
+import com.search.blog.enums.BlogSearchKeywordEnum;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -12,9 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class KakaoBlogSearch {
-    private String url = "https://dapi.kakao.com/v2/search/blog";
-    private String apiKey = "7980d53bb05df342637585c06f764ed9";
+    @Value("${blog.search.kakao.url}")
+    private String url;
+
+    @Value("${blog.search.kakao.api-key}")
+    private String apiKey;
 
     private HttpHeaders httpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -27,8 +34,8 @@ public class KakaoBlogSearch {
     public Map<String, Object> list(String query, String sort, Integer page, Integer size) throws Exception {
         HttpEntity<String> httpEntity = new HttpEntity<>(this.httpHeaders());
 
-        if (sort == null || !"recency".equals(sort)) {
-            sort = "accuracy";
+        if (sort == null || !BlogSearchKeywordEnum.RECENCY.code().equals(sort)) {
+            sort = BlogSearchKeywordEnum.ACCURACY.code();
         }
 
         if (page == null || page.intValue() < 1 || page.intValue() > 50) {
@@ -41,10 +48,10 @@ public class KakaoBlogSearch {
 
         URI targetUrl = UriComponentsBuilder
                 .fromUriString(url)
-                .queryParam("query", query)
-                .queryParam("sort", sort)
-                .queryParam("page", page)
-                .queryParam("size", size)
+                .queryParam(BlogSearchKeywordEnum.QUERY.code(), query)
+                .queryParam(BlogSearchKeywordEnum.SORT.code(), sort)
+                .queryParam(BlogSearchKeywordEnum.PAGE.code(), page)
+                .queryParam(BlogSearchKeywordEnum.SIZE.code(), size)
                 .build()
                 .encode(StandardCharsets.UTF_8)
                 .toUri();
@@ -52,12 +59,12 @@ public class KakaoBlogSearch {
         Map<String, Object> returnData = new RestTemplate().exchange(targetUrl, HttpMethod.GET, httpEntity, Map.class).getBody();
 
         Map<String, Object> result = new HashMap<>();
-        result.put("list", (ArrayList<Map<String, Object>>)(returnData.get("documents")));
-        result.put("sort", sort);
-        result.put("page", page);
-        result.put("size", size);
+        result.put(BlogSearchKeywordEnum.LIST.code(), (ArrayList<Map<String, Object>>)(returnData.get("documents")));
+        result.put(BlogSearchKeywordEnum.SORT.code(), sort);
+        result.put(BlogSearchKeywordEnum.PAGE.code(), page);
+        result.put(BlogSearchKeywordEnum.SIZE.code(), size);
 
-        Map<String, Object> metaData = (Map<String, Object>)returnData.get("meta");
+        Map<String, Object> metaData = (Map<String, Object>)returnData.get(BlogSearchKeywordEnum.META.code());
 
         Integer pageableCount = Integer.parseInt(metaData.get("pageable_count").toString());
 

@@ -30,6 +30,9 @@ public class StatisticsService {
     @Autowired
     BlogSearchHistoryJpa blogSearchHistoryJpa;
 
+    @Autowired
+    KakaoBlogSearch kakaoBlogSearch;
+
     public Map<String, Object> statistics() {
         Map<String, Object> result = new HashMap<>();
 
@@ -52,7 +55,7 @@ public class StatisticsService {
         }
 
         try {
-            result = new KakaoBlogSearch().list(query, sort, page, size);
+            result = kakaoBlogSearch.list(query, sort, page, size);
 
             blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
         } catch(Exception e01) {

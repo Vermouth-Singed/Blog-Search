@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: blog-search
+blog:
+  search:
+    kakao:
+      url: "https://dapi.kakao.com/v2/search/blog"
+      api-key: "7980d53bb05df342637585c06f764ed9"

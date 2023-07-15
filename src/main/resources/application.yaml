@@ -18,6 +18,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  profiles:
+    include: blog-search
 server:
   port: 8080
   error:
