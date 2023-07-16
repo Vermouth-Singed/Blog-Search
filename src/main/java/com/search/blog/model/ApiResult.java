@@ -3,6 +3,7 @@ package com.search.blog.model;
 import com.search.blog.enums.ApiResultEnum;
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -17,7 +18,14 @@ public class ApiResult {
         this.data = data;
     }
 
-    public static ApiResult OK(Map<String, Object> data){
+    public static ApiResult OK(Object object){
+        if (object instanceof Map) {
+            return new ApiResult((Map<String, Object>)object);
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("data", object);
+
         return new ApiResult(data);
     }
 }

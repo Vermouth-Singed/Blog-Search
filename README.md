@@ -19,3 +19,5 @@
 |cnt|검색횟수|
 ### - 스웨거
 ![](swagger.png)
+### - 세팅
+1. Environment variables 에 jasypt.key=?? 값 설정 후 실행

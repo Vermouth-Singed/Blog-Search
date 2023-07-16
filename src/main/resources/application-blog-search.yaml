@@ -6,4 +6,4 @@ blog:
   search:
     kakao:
       url: "https://dapi.kakao.com/v2/search/blog"
-      api-key: "7980d53bb05df342637585c06f764ed9"
+      api-key: ENC(QGNGgE95fLShD8Clseeuv5yaX5fQ0oNDcnb1w9U0Nlnkp7Nf4ffTOe6bXMIOhsgD)

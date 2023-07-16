@@ -1,5 +1,6 @@
-package com.search.blog.service;
+package com.search.blog.scheduler;
 
+import com.search.blog.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;

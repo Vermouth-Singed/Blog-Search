@@ -25,3 +25,8 @@ server:
   error:
     whitelabel:
       enabled: false
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
