@@ -7,3 +7,7 @@ blog:
     kakao:
       url: "https://dapi.kakao.com/v2/search/blog"
       api-key: ENC(QGNGgE95fLShD8Clseeuv5yaX5fQ0oNDcnb1w9U0Nlnkp7Nf4ffTOe6bXMIOhsgD)
+    naver:
+      url: "https://openapi.naver.com/v1/search/blog.json"
+      clientId: ENC(iNXJ2cvdzpQGFkebUVzszkoMOdusvlb3OCCSagOATeM=)
+      clientSecret: ENC(sw9wp316P4zpbTyH66gZ2meygQNZdG98)

@@ -10,6 +10,7 @@ import com.search.blog.repository.BlogSearchCntQuerydsl;
 import com.search.blog.repository.BlogSearchHistoryJpa;
 import com.search.blog.repository.BlogSearchHistoryQuerydsl;
 import com.search.blog.vo.KakaoBlogSearch;
+import com.search.blog.vo.NaverBlogSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,9 @@ public class StatisticsService {
     @Autowired
     KakaoBlogSearch kakaoBlogSearch;
 
+    @Autowired
+    NaverBlogSearch naverBlogSearch;
+
     public Map<String, Object> statistics() {
         Map<String, Object> result = new HashMap<>();
 
@@ -55,17 +59,19 @@ public class StatisticsService {
             return result;
         }
 
-        try {
-            result = kakaoBlogSearch.list(query, sort, page, size);
-
-            blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
-        } catch(Exception e01) {
+//        try {
+//            result = kakaoBlogSearch.list(query, sort, page, size);
+//
+//            blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
+//        } catch(Exception e01) {
             try {
+                result = naverBlogSearch.list(query, sort, page, size);
+
                 blogSearchHistoryJpa.save(BlogSearchHistory.builder().source(BlogSearchHistoryEnum.NAVER.code()).query(query).build());
             } catch(Exception e) {
                 result.put(ApiResultEnum.MESSAGE.code(), ErrorMsg.UNPREDICTABLE_ERROR.msg());
             }
-        }
+//        }
 
         return result;
     }

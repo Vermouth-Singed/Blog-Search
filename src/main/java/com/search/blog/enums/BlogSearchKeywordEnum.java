@@ -8,7 +8,10 @@ public enum BlogSearchKeywordEnum {
     PAGE("page"),
     SIZE("size"),
     LIST("list"),
-    META("meta");
+    META("meta"),
+    TOTAL("total"),
+    SIM("sim"),
+    DATE("date");
 
     private String code;
 
