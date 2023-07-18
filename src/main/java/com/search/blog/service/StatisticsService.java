@@ -3,6 +3,7 @@ package com.search.blog.service;
 import com.search.blog.entity.BlogSearchCnt;
 import com.search.blog.entity.BlogSearchHistory;
 import com.search.blog.enums.ApiResultEnum;
+import com.search.blog.enums.BlogSearchHistoryEnum;
 import com.search.blog.model.ErrorMsg;
 import com.search.blog.repository.BlogSearchCntJpa;
 import com.search.blog.repository.BlogSearchCntQuerydsl;
@@ -59,13 +60,11 @@ public class StatisticsService {
 
             blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
         } catch(Exception e01) {
-            result.put(ApiResultEnum.MESSAGE.code(), ErrorMsg.UNPREDICTABLE_ERROR.msg());
-
-//            try {
-//                blogSearchHistoryJpa.save(BlogSearchHistory.builder().source(BlogSearchHistoryEnum.NAVER.code()).query(query).build());
-//            } catch(Exception e) {
-//                result.put(ApiResultEnum.MESSAGE.code(), ErrorMsg.UNPREDICTABLE_ERROR.msg());
-//            }
+            try {
+                blogSearchHistoryJpa.save(BlogSearchHistory.builder().source(BlogSearchHistoryEnum.NAVER.code()).query(query).build());
+            } catch(Exception e) {
+                result.put(ApiResultEnum.MESSAGE.code(), ErrorMsg.UNPREDICTABLE_ERROR.msg());
+            }
         }
 
         return result;
