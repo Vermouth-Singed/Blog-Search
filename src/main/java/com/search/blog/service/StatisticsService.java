@@ -59,11 +59,11 @@ public class StatisticsService {
             return result;
         }
 
-//        try {
-//            result = kakaoBlogSearch.list(query, sort, page, size);
-//
-//            blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
-//        } catch(Exception e01) {
+        try {
+            result = kakaoBlogSearch.list(query, sort, page, size);
+
+            blogSearchHistoryJpa.save(BlogSearchHistory.builder().query(query).build());
+        } catch(Exception e01) {
             try {
                 result = naverBlogSearch.list(query, sort, page, size);
 
@@ -71,7 +71,7 @@ public class StatisticsService {
             } catch(Exception e) {
                 result.put(ApiResultEnum.MESSAGE.code(), ErrorMsg.UNPREDICTABLE_ERROR.msg());
             }
-//        }
+        }
 
         return result;
     }

@@ -1,6 +1,7 @@
 package com.search.blog.vo;
 
 import com.search.blog.enums.BlogSearchKeywordEnum;
+import com.search.blog.util.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -59,7 +60,14 @@ public class KakaoBlogSearch {
         Map<String, Object> returnData = new RestTemplate().exchange(targetUrl, HttpMethod.GET, httpEntity, Map.class).getBody();
 
         Map<String, Object> result = new HashMap<>();
-        result.put(BlogSearchKeywordEnum.LIST.code(), (ArrayList<Map<String, Object>>)(returnData.get("documents")));
+        result.put(
+            BlogSearchKeywordEnum.LIST.code(),
+            ((ArrayList<Map<String, Object>>)(returnData.get("documents"))).stream().map(map -> {
+                map.put("datetime", DateUtil.convertStrToDttmStr((String)map.get("datetime")));
+
+                return map;
+            })
+        );
         result.put(BlogSearchKeywordEnum.SORT.code(), sort);
         result.put(BlogSearchKeywordEnum.PAGE.code(), page);
         result.put(BlogSearchKeywordEnum.SIZE.code(), size);

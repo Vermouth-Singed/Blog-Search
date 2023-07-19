@@ -1,6 +1,7 @@
 package com.search.blog.vo;
 
 import com.search.blog.enums.BlogSearchKeywordEnum;
+import com.search.blog.util.DateUtil;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,34 +60,27 @@ public class NaverBlogSearch {
         JSONObject jsonObj = (JSONObject) obj;
 
         Map<String, Object> result = new HashMap<>();
-        result.put(BlogSearchKeywordEnum.LIST.code(), (ArrayList<Map<String, Object>>)(jsonObj.get("items")));
+        result.put(
+            BlogSearchKeywordEnum.LIST.code(),
+            ((ArrayList<Map<String, Object>>)(jsonObj.get("items"))).stream().map(item -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("blogname", item.get("bloggername"));
+                map.put("contents", item.get("description"));
+                map.put("datetime", DateUtil.convertStrToDttmStr((String)item.get("postdate")));
+                map.put("thumbnail", "");
+                map.put("title", item.get("title"));
+                map.put("url", item.get("link"));
 
-//        {
-//            "bloggername":"EBS"
-//            "description":"70대, 죽기 전에 <b>집짓기<\/b> 칠십 넘어 집 짓다간 10년 더 늙고, 발인 날짜 나온다는 주변의 만류. 하지만... 아무도 몰래 종이에다 설계도를 그리던 경원 씨는 결국 집을 짓기 위해 용기를 냈습니다. 주변 사람들은... ",
-//                "postdate":"20230605",
-//                "link":"https:\/\/blog.naver.com\/ebsstory\/223120827151",
-//                "thumbnail": "",
-//                "title":"나만의 <b>집 짓기<\/b>에 도전한... 탐구 집 &lt;나의 건축 일지&gt; 미리보기",
-//                "bloggerlink":"blog.naver.com\/ebsstory",
-//
-//        }
-//
-//        {
-//            "blogname": "단단이아빠",
-//                "contents": "또한 <b>집</b>에서 가족과 함께 생활하기 위한 최소한의 위생관리도 스스로 해결하지 못하기 시 작했다. 하루는 화장실에 들어간 엄마가 한 시간 가까이 밖에 나오지 않았는데 아무리 문을 두드려도 알아들을 수 없는 소리만  외칠 뿐 밖으로 나오지 않았다. 기다림에 지친 난 문고리를 부숴 화장실 안으로 들어갔는데 눈앞에...",
-//                "datetime": "2023-07-18T23:05:47.000+09:00",
-//                "thumbnail": "",
-//                "title": "10년간의 헤어짐 - Cahpter 5 - 퇴행의 자각",
-//                "url": "https://brunch.co.kr/@64b25d9202064e3/11"
-//        }
+                return map;
+            })
+        );
         result.put(BlogSearchKeywordEnum.SORT.code(), sort);
         result.put(BlogSearchKeywordEnum.PAGE.code(), start);
         result.put(BlogSearchKeywordEnum.SIZE.code(), display);
 
         obj = jsonObj.get(BlogSearchKeywordEnum.TOTAL.code());
 
-        int total = Integer.parseInt(obj.toString());
+        int total = obj != null ? Integer.parseInt(obj.toString()) : 0;
         int totalPage = (total % display == 0 ? 0 : 1) + total/display;
 
         result.put("lastPage", totalPage > 50 ? 50 : totalPage);
