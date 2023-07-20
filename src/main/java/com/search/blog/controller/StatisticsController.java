@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "블로그 검색", description = "블로그 검색 API")
 @RestController
-@RequestMapping("/search/blog")
+@RequestMapping("/api/search/blog")
 public class StatisticsController {
     @Autowired
     StatisticsService statisticsService;
@@ -24,7 +24,7 @@ public class StatisticsController {
     @PostMapping
     @Operation(summary = "블로그 조회", description = "블로그 검색 후 검색어 이력 저장")
     public ApiResult search(@RequestBody BlogSearchDTO blogSearchDTO) throws Exception {
-//        http post localhost:8080/search/blog query=집짓기 sort=recency page=1 size=1
+//        http post localhost:8080/api/search/blog query=집짓기 sort=recency page=1 size=1
         return ApiResult.OK(statisticsService.search(
                 blogSearchDTO.getQuery(),
                 blogSearchDTO.getSort(),

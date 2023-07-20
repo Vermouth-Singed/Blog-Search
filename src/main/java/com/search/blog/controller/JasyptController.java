@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "jasypt 테스트", description = "jasypt 테스트 API")
 @RestController
-@RequestMapping("/jasypt")
+@RequestMapping("/api/jasypt")
 public class JasyptController {
     @Autowired
     Jasypt jasypt;
@@ -24,14 +24,14 @@ public class JasyptController {
     @GetMapping("/encrypt/{text}")
     @Operation(summary = "jasypt 암호화", description = "jasypt 암호화 텍스트 조회")
     public ApiResult encrypt(@PathVariable String text) {
-//        http get localhost:8080/jasypt/encrypt/asdf
+//        http get localhost:8080/api/jasypt/encrypt/asdf
         return ApiResult.OK(jasypt.encrypt(text));
     }
 
     @GetMapping("/key")
     @Operation(summary = "jasypt 키", description = "jasypt 키 텍스트 조회")
     public ApiResult key() {
-//        http get localhost:8080/jasypt/key
+//        http get localhost:8080/api/jasypt/key
         return ApiResult.OK(jasyptKey);
     }
 }
